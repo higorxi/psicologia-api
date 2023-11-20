@@ -330,17 +330,17 @@ export async function getAluno(req: Request, res: Response) {
 
 export async function getAlunoById(req: Request, res: Response) {
   try {
-    if (!secretario) {
+    if (!aluno) {
       throw new Error('secretario object is undefined');
     }
 
-    const secretarioData = await secretario.findById(req.params.id);
+    const alunoData = await aluno.findById(req.params.id);
 
-    if (!secretarioData) {
+    if (!alunoData) {
       throw new Error('secretario not found');
     }
 
-    res.json(secretarioData);
+    res.json(alunoData);
   } catch (error: any) {
     res.json({ message: error.message });
   }
@@ -389,14 +389,21 @@ export async function PatchAlunoArquivo(request: Request, response: Response) {
 export async function deleteAluno(request: Request, response: Response) {
   try {
     const id = request.params.id;
-    
-    const res = await aluno.findByIdAndDelete(id)
-  }
-  catch (error) {
+
+    const alunoEncontrado = await aluno.findById(id);
+
+    if (!alunoEncontrado) {
+      return response.status(404).json({ error: 'Aluno não encontrado' });
+    }
+
+    const alunoExcluido = await aluno.findByIdAndDelete(id);
+
+    return response.json({ message: 'Aluno excluído com sucesso', aluno: alunoExcluido });
+  } catch (error) {
     console.error(error);
+    return response.status(500).json({ error: 'Erro interno do servidor' });
   }
 }
-
 
 // Funçoes Paciente:
 // Metodo POST:
@@ -405,7 +412,7 @@ export async function createPaciente(request: Request, response: Response) {
     // Informações pessoais:
     nome,
     cpf,
-    dataDeNacimento,
+    dataDeNascimento,
     email,
     telefoneContato,
     sexo,
@@ -451,10 +458,10 @@ export async function createPaciente(request: Request, response: Response) {
         .send("CPF inválido.");
   }
 
-  if (!dataDeNacimento) {
+  if (!dataDeNascimento) {
     return response
         .status(203)
-        .send("Insira a sua data de nacimento.");
+        .send("Insira a sua data de nascimento.");
   }
 
   if (!email) {
@@ -572,7 +579,7 @@ export async function createPaciente(request: Request, response: Response) {
     // Informações pessoais:
     nome,
     cpf,
-    dataDeNacimento,
+    dataDeNascimento,
     email,
     telefoneContato,
     sexo,
@@ -664,7 +671,7 @@ export async function patchPaciente(request: Request, response: Response) {
     // Informações pessoais:
     nome,
     cpf,
-    dataDeNacimento,
+    dataDeNascimento,
     email,
     telefoneContato,
     sexo,
@@ -697,7 +704,7 @@ export async function patchPaciente(request: Request, response: Response) {
     // Informações pessoais:
     nome,
     cpf,
-    dataDeNacimento,
+    dataDeNascimento,
     email,
     telefoneContato,
     sexo,
@@ -753,13 +760,22 @@ export async function patchPacienteArquivo(request: Request, response: Response)
 export async function deletePaciente(request: Request, response: Response) {
   try {
     const id = request.params.id;
-    
-    const res = await Paciente.findByIdAndDelete(id)
-  }
-  catch (error) {
+
+    const pacienteEncontrado = await Paciente.findById(id);
+
+    if (!pacienteEncontrado) {
+      return response.status(404).json({ error: 'Paciente não encontrado' });
+    }
+
+    const pacienteExcluido = await Paciente.findByIdAndDelete(id);
+
+    return response.json({ message: 'Paciente excluído com sucesso', Paciente: pacienteExcluido});
+  } catch (error) {
     console.error(error);
+    return response.status(500).json({ error: 'Erro interno do servidor' });
   }
 }
+
 
 // Funçoes Professor:
 // Metodo POST:
@@ -922,11 +938,19 @@ export async function patchProfessorArquivo(request: Request, response: Response
 export async function deleteProfessor(request: Request, response: Response) {
   try {
     const id = request.params.id;
-    
-    const res = await professor.findByIdAndDelete(id)
-  }
-  catch (error) {
+
+    const professorEncontrado = await professor.findById(id);
+
+    if (!professorEncontrado) {
+      return response.status(404).json({ error: 'Professor não encontrado' });
+    }
+
+    const professorExcluido = await professor.findByIdAndDelete(id);
+
+    return response.json({ message: 'Professor excluído com sucesso', professor: professorExcluido});
+  } catch (error) {
     console.error(error);
+    return response.status(500).json({ error: 'Erro interno do servidor' });
   }
 }
 
@@ -1091,10 +1115,18 @@ export async function patchSecretarioArquivo(request: Request, response: Respons
 export async function deleteSecretario(request: Request, response: Response) {
   try {
     const id = request.params.id;
-    
-    const res = await secretario.findByIdAndDelete(id)
-  }
-  catch (error) {
+
+    const secretarioEncontrado = await secretario.findById(id);
+
+    if (!secretarioEncontrado) {
+      return response.status(404).json({ error: 'Secretario não encontrado' });
+    }
+
+    const secretarioExcluido = await secretario.findByIdAndDelete(id);
+
+    return response.json({ message: 'Secretario excluído com sucesso', secretario: secretarioExcluido});
+  } catch (error) {
     console.error(error);
+    return response.status(500).json({ error: 'Erro interno do servidor' });
   }
 }

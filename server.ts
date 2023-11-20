@@ -20,7 +20,7 @@ const swaggerOptions = {
             description: 'API do sistema para o curso de Psicologia da UniEvangélica',
         },
     },
-    apis: ['server.ts','./routes/*.ts'],
+    apis: ['server.ts','./routes/*.ts'], 
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);

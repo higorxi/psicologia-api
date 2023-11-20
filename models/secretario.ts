@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const professorSchema = new mongoose.Schema (
+const secretarioSchema = new mongoose.Schema (
     {
         createdAt: {
             type: Date,
@@ -36,4 +36,4 @@ const professorSchema = new mongoose.Schema (
     { timestamps: true }
 );
 
-export default mongoose.model("Secretario", professorSchema);
+export default mongoose.model("Secretario", secretarioSchema);

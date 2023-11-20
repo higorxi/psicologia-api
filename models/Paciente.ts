@@ -17,7 +17,7 @@ const pacienteSchema = new mongoose.Schema(
         required: true,
         trim: true
       },
-      dataDeNacimento: {
+      dataDeNascimento: {
         type: String,   
         required: true,
       },

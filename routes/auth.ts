@@ -142,25 +142,25 @@ router.delete("/deleteAluno/:id", deleteAluno);
 router.post("/registroPaciente", createPaciente);
 router.get("/getPacientes", getPaciente);
 router.get("/getPacienteById/:id", getPacienteById)
-router.patch("/attPaciente", patchPaciente);
+router.patch("/attPaciente/:id", patchPaciente);
 router.patch("/arquivarPacientes", patchPacienteArquivo);
-router.delete("/arquivarPacientes", deletePaciente);
+router.delete("/deletePaciente/:id", deletePaciente);
 
 // Rotas Professor 
 router.post("/registroProfessor", createProfessor);
 router.get("/getProfessores", getProfessores);
 router.get("/getProfessorById/:id", getProfessorById)
-router.patch("/attProfessor", patchProfessor);
+router.patch("/attProfessor/:id", patchProfessor);
 router.patch("/arquivarProfessor", patchProfessorArquivo);
-router.delete("/arquivarProfessor", deleteProfessor);
+router.delete("/deleteProfessor/:id", deleteProfessor);
 
 // Rotas Secretario
 router.post("/registroSecretario", createSecretario);
 router.get("/getSecretarios", getSecretarios);
 router.get("/getSecretarioById/:id", getSecretarioById);
-router.patch("/attSecretario", patchSecretario);
+router.patch("/attSecretario/:id", patchSecretario);
 router.patch("/arquivarSecretario", patchSecretarioArquivo);
-router.delete("/arquivarSecretario", deleteSecretario);
+router.delete("/deleteSecretario/:id", deleteSecretario);
 
 // obs. da errqo se tentar utilizar export default
 module.exports = router
