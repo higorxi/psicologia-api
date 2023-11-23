@@ -41,6 +41,10 @@ const pacienteSchema = new mongoose.Schema(
         type: String,
         required: true, 
       },
+      rendaFamiliar:{
+        type: String,
+        required: true,
+      },
       profissao: {
         type: String,
         required: true, 
