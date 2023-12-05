@@ -28,7 +28,8 @@ const alunoSchema = new mongoose.Schema (
             required: true,
           },
           professor: {
-            type: String,
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Professor",
             required: true,
           },
           email: {
@@ -40,6 +41,7 @@ const alunoSchema = new mongoose.Schema (
             default: false,
             required:false,
           },
+          
     },
     { timestamps: true }
 );

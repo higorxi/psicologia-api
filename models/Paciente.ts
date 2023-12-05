@@ -123,7 +123,14 @@ const pacienteSchema = new mongoose.Schema(
         type: Boolean,
         default: false,
         required:false,
-      }
+      },
+      alunos: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Aluno",
+          required: false,
+        },
+      ],
     },
     { timestamps: true }
   );

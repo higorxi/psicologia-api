@@ -4,17 +4,15 @@ import Aluno from "../models/aluno";
 import Paciente from "../models/Paciente"
 import Professor from "../models/professor";
 import Secretario from "../models/secretario";
+import consulta from "../models/consulta";
 import jwt from "jsonwebtoken";
-import axios from "axios";
 
 
 
 const JWT_SECRET = 'URWzLAYqnM63NDxcGnskMDnT1GanhVcAJpp6ylI5xio5otZMp2zLQ4ddYjOaT9F3'
 
 import bcrypt from "bcrypt";
-import { decode } from "punycode";
 import aluno from "../models/aluno";
-import { request } from "http";
 import professor from "../models/professor";
 import secretario from "../models/secretario";
 
@@ -1129,4 +1127,151 @@ export async function deleteSecretario(request: Request, response: Response) {
     console.error(error);
     return response.status(500).json({ error: 'Erro interno do servidor' });
   }
+}
+
+// Funçoes Consulta
+// Metodo POST:
+export async function createConsulta(request: Request, response: Response) {
+  const {
+    tipoDeTratamento,
+    horarioInicio,
+    horarioFinal,
+    local,
+    dataDaConsulta,
+    frequencia,
+    tipoDeConsulta,
+    observacao,
+    statusDaConsulta,
+  } = request.body;
+
+  if (!tipoDeTratamento) {
+    return response
+        .status(203)
+        .send("Insira o tipo de tratamento.");
+  }
+  
+  if (!horarioInicio) {
+    return response
+        .status(203)
+        .send("Insira o horairo inicial.");
+  }
+
+  if (!horarioFinal) {
+    return response
+        .status(203)
+        .send("Insira o horairo que termino.");
+  }
+
+  if (!local) {
+    return response
+        .status(203)
+        .send("Insira o local da consulta.");
+  }
+
+  if (!dataDaConsulta) {
+    return response
+        .status(203)
+        .send("Insira a data da consulta.");
+  }
+
+  if (!frequencia) {
+    return response
+        .status(203)
+        .send("Insira qual a frequencia da consulta.");
+  }
+
+  if (!tipoDeConsulta) {
+    return response
+        .status(203)
+        .send("Insira o tipo de consulta.");
+  }
+
+  if (!observacao) {
+    return response
+        .status(203)
+        .send("Insira a sua observação.");
+  }
+
+  if (!statusDaConsulta) {
+    return response
+        .status(203)
+        .send("Insira o status da consulta.");
+  }
+
+
+  // Criação de um novo Consulta:
+  const createConsulta = new consulta({
+    tipoDeTratamento,
+    horarioInicio,
+    horarioFinal,
+    local,
+    dataDaConsulta,
+    frequencia,
+    tipoDeConsulta,
+    observacao,
+    statusDaConsulta,
+  });
+
+  // Salvamento do novo usuário no banco de dados:
+  try {
+    await createConsulta.save();
+    return response
+        .status(200)
+        .send("Consulta criada com sucesso.");
+  } catch (e) {
+    console.error(e);
+    return response
+        .status(203)
+        .send("Não foi possivel criar Consulta.");
+  }
+}
+
+// Metodo GET:
+export async function getConsultas(req: Request, res: Response) {
+  try {
+    consulta.find({})
+      .then((data) => {
+        res.json(data);
+      })
+      .catch((error) => {
+        res.json({ message: error });
+      });
+  } catch (error) {
+    res.json({ message: error });
+  }
+}
+
+// Metodo PATCH:
+export async function patchConsulta(request: Request, response: Response) {
+  try {
+    const id = request.params.id;
+    const {
+    tipoDeTratamento,
+    horarioInicio,
+    horarioFinal,
+    local,
+    dataDaConsulta,
+    frequencia,
+    tipoDeConsulta,
+    observacao,
+    statusDaConsulta,
+    } = request.body;
+
+    const res = await consulta.findByIdAndUpdate(id, {
+    tipoDeTratamento,
+    horarioInicio,
+    horarioFinal,
+    local,
+    dataDaConsulta,
+    frequencia,
+    tipoDeConsulta,
+    observacao,
+    statusDaConsulta,
+    });
+    response.send({ status: "ok", ocorrencias: res})
+  }
+  catch (error) {
+    console.error(error);
+  }
+
 }
