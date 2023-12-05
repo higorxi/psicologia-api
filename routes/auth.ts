@@ -78,9 +78,9 @@ router.patch("/arquivarSecretario", patchSecretarioArquivo);
 router.delete("/deleteSecretario/:id", deleteSecretario);
 
 // Rotas Consulta
-router.post("/registartConsulta", createConsulta);
-router.get("getConsulta", getConsultas);
-router.patch("attConsulta/:id", patchConsulta);
+router.post("/registrarConsulta", createConsulta);
+router.get("/getConsulta", getConsultas);
+router.patch("/attConsulta/:id", patchConsulta);
 
 // obs. da errqo se tentar utilizar export default
 module.exports = router

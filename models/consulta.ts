@@ -41,7 +41,7 @@ const consultaSchema = new mongoose.Schema(
     },
     statusDaConsulta: {
       type: String,
-      required: true,
+      required: false,
     },
     createdAt: {
       type: Date,

@@ -1133,6 +1133,7 @@ export async function deleteSecretario(request: Request, response: Response) {
 // Metodo POST:
 export async function createConsulta(request: Request, response: Response) {
   const {
+    paciente,
     tipoDeTratamento,
     horarioInicio,
     horarioFinal,
@@ -1144,6 +1145,11 @@ export async function createConsulta(request: Request, response: Response) {
     statusDaConsulta,
   } = request.body;
 
+  if (!paciente) {
+    return response
+        .status(203)
+        .send("Insira o paciente.");
+  }
   if (!tipoDeTratamento) {
     return response
         .status(203)
@@ -1201,6 +1207,7 @@ export async function createConsulta(request: Request, response: Response) {
 
   // Criação de um novo Consulta:
   const createConsulta = new consulta({
+    paciente, 
     tipoDeTratamento,
     horarioInicio,
     horarioFinal,
