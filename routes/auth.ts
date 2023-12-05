@@ -25,6 +25,7 @@ import {
     patchProfessor,
     patchProfessorArquivo,
     deleteProfessor,
+    getProfessoresSelect,
     
     createSecretario,
     getSecretarioById,
@@ -68,6 +69,7 @@ router.get("/getProfessorById/:id", getProfessorById)
 router.patch("/attProfessor/:id", patchProfessor);
 router.patch("/arquivarProfessor", patchProfessorArquivo);
 router.delete("/deleteProfessor/:id", deleteProfessor);
+router.get("/getProfessoresSelect", getProfessoresSelect);
 
 // Rotas Secretario
 router.post("/registroSecretario", createSecretario);

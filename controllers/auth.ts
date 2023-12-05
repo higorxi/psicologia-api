@@ -222,7 +222,8 @@ export async function createAluno(request: Request, response: Response) {
     nome,
     cpf,
     telefoneContato,
-    professor,
+    professorID,
+    professorNome,
     email,
     arquivado,
     
@@ -258,10 +259,10 @@ export async function createAluno(request: Request, response: Response) {
         .send("Insira seu numero de contato.");
   }
 
-  if (!professor) {
+  if (!professorID) {
     return response
-        .status(203)
-        .send("Insira o nome do professor.");
+      .status(203)
+      .send("Insira o ID do professor.");
   }
 
   if (!email) {
@@ -284,7 +285,8 @@ export async function createAluno(request: Request, response: Response) {
     nome,
     cpf,
     telefoneContato,
-    professor,
+    professorID,
+    professorNome,
     email,
     arquivado,
     role: "Estudante",
@@ -348,7 +350,7 @@ export async function getAlunoById(req: Request, res: Response) {
 export async function patchAluno(request: Request, response: Response) {
   try {
     const id = request.params.id;
-    const { matricula, periodo, nome, cpf, telefoneContato, professor, email } = request.body;
+    const { matricula, periodo, nome, cpf, telefoneContato, professorNome, email } = request.body;
 
     const res = await aluno.findByIdAndUpdate(id, {
       matricula,
@@ -356,7 +358,7 @@ export async function patchAluno(request: Request, response: Response) {
       nome,
       cpf,
       telefoneContato,
-      professor,
+      professorNome,
       email,
     });
     response.send({ status: "ok", ocorrencias: res})
@@ -881,6 +883,24 @@ export async function getProfessorById(req: Request, res: Response) {
 
     if (!professorData) {
       throw new Error('professor not found');
+    }
+
+    res.json(professorData);
+  } catch (error: any) {
+    res.json({ message: error.message });
+  }
+}
+
+export async function getProfessoresSelect(req: Request, res: Response) {
+  try {
+    if (!professor) {
+      throw new Error('professor object is undefined');
+    }
+
+    const professorData = await professor.find({}, "nome");
+
+    if (!professorData) {
+      throw new Error('Professores não encontrados');
     }
 
     res.json(professorData);
