@@ -47,6 +47,13 @@ const consultaSchema = new mongoose.Schema(
       type: Date,
       default: Date.now(),
     },
+    alunos: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Aluno",
+        required: false,
+      },
+    ],
   },
   { timestamps: true }
 );
