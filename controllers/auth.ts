@@ -224,6 +224,7 @@ export async function createAluno(request: Request, response: Response) {
     telefoneContato,
     professorID,
     professorNome,
+    professorDisciplina,
     email,
     arquivado,
     
@@ -287,6 +288,7 @@ export async function createAluno(request: Request, response: Response) {
     telefoneContato,
     professorID,
     professorNome,
+    professorDisciplina,
     email,
     arquivado,
     role: "Estudante",
@@ -337,7 +339,7 @@ export async function getAlunoById(req: Request, res: Response) {
     const alunoData = await aluno.findById(req.params.id);
 
     if (!alunoData) {
-      throw new Error('secretario not found');
+      throw new Error('Aluno não encontrado');
     }
 
     res.json(alunoData);
@@ -897,7 +899,7 @@ export async function getProfessoresSelect(req: Request, res: Response) {
       throw new Error('professor object is undefined');
     }
 
-    const professorData = await professor.find({}, "nome");
+    const professorData = await professor.find({}, 'nome disciplina');
 
     if (!professorData) {
       throw new Error('Professores não encontrados');
