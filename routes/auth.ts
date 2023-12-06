@@ -36,7 +36,8 @@ import {
 
     createConsulta,
     getConsultas,
-    patchConsulta
+    patchConsulta,
+    getAlunosSelect,
 
 } from "../controllers/auth"    ;
 
@@ -50,6 +51,7 @@ router.post("/login", loginUser);
 router.post("/registroAluno", createAluno);
 router.get("/getAlunos", getAluno);
 router.get("/getAlunoById/:id", getAlunoById)
+router.get("/getAlunosSelect", getAlunosSelect)
 router.patch("/attAluno/:id", patchAluno);
 router.patch("/arquivarAluno/:id", PatchAlunoArquivo);
 router.delete("/deleteAluno/:id", deleteAluno);
@@ -66,10 +68,11 @@ router.delete("/deletePaciente/:id", deletePaciente);
 router.post("/registroProfessor", createProfessor);
 router.get("/getProfessores", getProfessores);
 router.get("/getProfessorById/:id", getProfessorById)
+router.get("/getProfessoresSelect", getProfessoresSelect);
 router.patch("/attProfessor/:id", patchProfessor);
 router.patch("/arquivarProfessor", patchProfessorArquivo);
 router.delete("/deleteProfessor/:id", deleteProfessor);
-router.get("/getProfessoresSelect", getProfessoresSelect);
+
 
 // Rotas Secretario
 router.post("/registroSecretario", createSecretario);

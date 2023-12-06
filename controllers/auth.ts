@@ -348,6 +348,25 @@ export async function getAlunoById(req: Request, res: Response) {
   }
 }
 
+export async function getAlunosSelect(req: Request, res: Response) {
+  try {
+    if (!aluno) {
+      throw new Error('professor object is undefined');
+    }
+
+    const alunoData = await aluno.find({}, 'nome');
+
+    if (!alunoData) {
+      throw new Error('Professores não encontrados');
+    }
+
+    res.json(alunoData);
+  } catch (error: any) {
+    res.json({ message: error.message });
+  }
+}
+
+
 // Metodo PATCH:
 export async function patchAluno(request: Request, response: Response) {
   try {
@@ -406,6 +425,7 @@ export async function deleteAluno(request: Request, response: Response) {
     return response.status(500).json({ error: 'Erro interno do servidor' });
   }
 }
+
 
 // Funçoes Paciente:
 // Metodo POST:
