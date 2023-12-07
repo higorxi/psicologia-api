@@ -698,7 +698,7 @@ export async function getPacienteById(req: Request, res: Response) {
   }
 }
 
-export async function getPacientesByIdAluno(req:Request, res:Response){
+export const getPacientesByIdAluno = async (req:Request, res:Response) => {
   try {
     const quemEncaminhouID = req.params.id
     const pacientesByAluno = await Paciente.find({quemEncaminhouID});
@@ -1199,11 +1199,10 @@ export async function deleteSecretario(request: Request, response: Response) {
 export async function createConsulta(request: Request, response: Response) {
   const {
     paciente,
-    tipoDeTratamento,
-    horarioInicio,
-    horarioFinal,
-    local,
-    dataDaConsulta,
+    title,
+    start,
+    end,
+    resourceId,
     frequencia,
     tipoDeConsulta,
     observacao,
@@ -1215,34 +1214,28 @@ export async function createConsulta(request: Request, response: Response) {
         .status(203)
         .send("Insira o paciente.");
   }
-  if (!tipoDeTratamento) {
+  if (!title) {
     return response
         .status(203)
         .send("Insira o tipo de tratamento.");
   }
   
-  if (!horarioInicio) {
+  if (!start) {
     return response
         .status(203)
         .send("Insira o horairo inicial.");
   }
 
-  if (!horarioFinal) {
+  if (!end) {
     return response
         .status(203)
         .send("Insira o horairo que termino.");
   }
 
-  if (!local) {
+  if (!resourceId) {
     return response
         .status(203)
         .send("Insira o local da consulta.");
-  }
-
-  if (!dataDaConsulta) {
-    return response
-        .status(203)
-        .send("Insira a data da consulta.");
   }
 
   if (!frequencia) {
@@ -1273,11 +1266,10 @@ export async function createConsulta(request: Request, response: Response) {
   // Criação de um novo Consulta:
   const createConsulta = new consulta({
     paciente, 
-    tipoDeTratamento,
-    horarioInicio,
-    horarioFinal,
-    local,
-    dataDaConsulta,
+    title,
+    start,
+    end,
+    resourceId,
     frequencia,
     tipoDeConsulta,
     observacao,
@@ -1318,10 +1310,10 @@ export async function patchConsulta(request: Request, response: Response) {
   try {
     const id = request.params.id;
     const {
-    tipoDeTratamento,
-    horarioInicio,
-    horarioFinal,
-    local,
+    title,
+    start,
+    end,
+    resourceId,
     dataDaConsulta,
     frequencia,
     tipoDeConsulta,
@@ -1330,10 +1322,10 @@ export async function patchConsulta(request: Request, response: Response) {
     } = request.body;
 
     const res = await consulta.findByIdAndUpdate(id, {
-    tipoDeTratamento,
-    horarioInicio,
-    horarioFinal,
-    local,
+    title,
+    start,
+    end,
+    resourceId,
     dataDaConsulta,
     frequencia,
     tipoDeConsulta,
@@ -1347,3 +1339,20 @@ export async function patchConsulta(request: Request, response: Response) {
   }
 
 }
+
+export const apagarTodasConsultas = async (req: Request, res: Response) => {
+  try {
+    // Utilize o método `deleteMany` do modelo para apagar todas as consultas
+    const result = await consulta.deleteMany();
+
+    // Verifique o resultado da operação
+    if (result.deletedCount > 0) {
+      return res.status(200).json({ message: 'Todas as consultas foram apagadas com sucesso.' });
+    } else {
+      return res.status(404).json({ message: 'Nenhuma consulta encontrada para apagar.' });
+    }
+  } catch (error) {
+    console.error('Erro ao apagar consultas:', error);
+    return res.status(500).json({ message: 'Erro interno do servidor ao apagar consultas.' });
+  }
+};

@@ -2,28 +2,28 @@ import mongoose from "mongoose";
 
 const consultaSchema = new mongoose.Schema(
   {
-    paciente: {
+    pacienteID: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Paciente',
       required: true,
     },
-    tipoDeTratamento: {
+    pacienteNome:{
+      type: String,
+      require: true,
+    },
+    title: {
       type: String,
       required: true,
     },
-    horarioInicio: {
+    start: {
       type: String,
       required: true,
     },
-    horarioFinal: {
+    end: {
       type: String,
       required: true,
     },
-    local: {
-      type: String,
-      required: true,
-    },
-    dataDaConsulta: {
+    resourceId: {
       type: String,
       required: true,
     },
@@ -47,13 +47,11 @@ const consultaSchema = new mongoose.Schema(
       type: Date,
       default: Date.now(),
     },
-    alunos: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Aluno",
-        required: false,
-      },
-    ],
+    alunoID:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Aluno',
+      require: true,
+    },
   },
   { timestamps: true }
 );

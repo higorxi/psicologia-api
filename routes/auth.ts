@@ -40,6 +40,7 @@ import {
     createConsulta,
     getConsultas,
     patchConsulta,
+    apagarTodasConsultas,
     
 
 } from "../controllers/auth"    ;
@@ -91,6 +92,6 @@ router.delete("/deleteSecretario/:id", deleteSecretario);
 router.post("/registrarConsulta", createConsulta);
 router.get("/getConsulta", getConsultas);
 router.patch("/attConsulta/:id", patchConsulta);
-
+router.delete("/deletarConsultas", apagarTodasConsultas)
 // obs. da errqo se tentar utilizar export default
 module.exports = router
