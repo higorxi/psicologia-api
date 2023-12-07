@@ -8,6 +8,8 @@ import {
     createAluno,
     getAluno,
     getAlunoById,
+    getAlunosSelect,
+    getAlunosByIdProfessor,
     patchAluno,
     PatchAlunoArquivo,
     deleteAluno,
@@ -15,6 +17,7 @@ import {
     createPaciente,
     getPaciente,
     getPacienteById,
+    getPacientesByIdAluno,
     patchPaciente,
     patchPacienteArquivo,
     deletePaciente,
@@ -37,7 +40,7 @@ import {
     createConsulta,
     getConsultas,
     patchConsulta,
-    getAlunosSelect,
+    
 
 } from "../controllers/auth"    ;
 
@@ -52,6 +55,7 @@ router.post("/registroAluno", createAluno);
 router.get("/getAlunos", getAluno);
 router.get("/getAlunoById/:id", getAlunoById)
 router.get("/getAlunosSelect", getAlunosSelect)
+router.get("/getAlunosByIdProfessor/:id", getAlunosByIdProfessor)
 router.patch("/attAluno/:id", patchAluno);
 router.patch("/arquivarAluno/:id", PatchAlunoArquivo);
 router.delete("/deleteAluno/:id", deleteAluno);
@@ -59,7 +63,8 @@ router.delete("/deleteAluno/:id", deleteAluno);
 // Rotas Paciente
 router.post("/registroPaciente", createPaciente);
 router.get("/getPacientes", getPaciente);
-router.get("/getPacienteById/:id", getPacienteById)
+router.get("/getPacienteById/:id", getPacienteById);
+router.get("/getPacientesByIdAluno/:id", getPacientesByIdAluno)
 router.patch("/attPaciente/:id", patchPaciente);
 router.patch("/arquivarPacientes", patchPacienteArquivo);
 router.delete("/deletePaciente/:id", deletePaciente);

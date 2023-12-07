@@ -103,7 +103,11 @@ const pacienteSchema = new mongoose.Schema(
         type: String,
         required: true, 
       },
-      quemEncaminhou: {
+      quemEncaminhouID: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true, 
+      },
+      quemEncaminhouNome: {
         type: String,
         required: true, 
       },
@@ -124,13 +128,6 @@ const pacienteSchema = new mongoose.Schema(
         default: false,
         required:false,
       },
-      alunos: [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Aluno",
-          required: false,
-        },
-      ],
     },
     { timestamps: true }
   );

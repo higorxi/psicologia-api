@@ -367,6 +367,17 @@ export async function getAlunosSelect(req: Request, res: Response) {
 }
 
 
+export const getAlunosByIdProfessor = async (req:Request, res:Response) => {
+  try {
+    const professorID = req.params.id
+    const alunos = await Aluno.find({professorID});
+    res.json(alunos);
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao buscar alunos por ID do professor.' });
+  }
+};
+
+
 // Metodo PATCH:
 export async function patchAluno(request: Request, response: Response) {
   try {
@@ -457,7 +468,8 @@ export async function createPaciente(request: Request, response: Response) {
     // Informação de tratamento:
     dataInicioTratamento,
     dataTerminoTratamento,
-    quemEncaminhou,
+    quemEncaminhouID,
+    quemEncaminhouNome,
     tipoDeTratamento,
     alunoUnieva,
     funcionarioUnieva,
@@ -584,7 +596,7 @@ export async function createPaciente(request: Request, response: Response) {
         .send("Insira a data do termino do tratamento.");
   }
 
-  if (!quemEncaminhou) {
+  if (!quemEncaminhouNome) {
     return response
         .status(203)
         .send("Insira o nome do que encaminhou esse paciente.");
@@ -624,7 +636,8 @@ export async function createPaciente(request: Request, response: Response) {
     // Informação de tratamento:
     dataInicioTratamento,
     dataTerminoTratamento,
-    quemEncaminhou,
+    quemEncaminhouID,
+    quemEncaminhouNome,
     tipoDeTratamento,
     alunoUnieva,
     funcionarioUnieva,
@@ -684,6 +697,16 @@ export async function getPacienteById(req: Request, res: Response) {
     res.json({ message: error.message });
   }
 }
+
+export async function getPacientesByIdAluno(req:Request, res:Response){
+  try {
+    const quemEncaminhouID = req.params.id
+    const pacientesByAluno = await Paciente.find({quemEncaminhouID});
+    res.json(pacientesByAluno);
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao buscar pacientes por ID do Aluno.' });
+  }
+};
 
 // Metodo PATCH:
 export async function patchPaciente(request: Request, response: Response) {
