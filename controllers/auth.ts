@@ -351,13 +351,13 @@ export async function getAlunoById(req: Request, res: Response) {
 export async function getAlunosSelect(req: Request, res: Response) {
   try {
     if (!aluno) {
-      throw new Error('professor object is undefined');
+      throw new Error('Aluno não existe');
     }
 
     const alunoData = await aluno.find({}, 'nome');
 
     if (!alunoData) {
-      throw new Error('Professores não encontrados');
+      throw new Error('Alunos não encontrados');
     }
 
     res.json(alunoData);
@@ -707,6 +707,26 @@ export const getPacientesByIdAluno = async (req:Request, res:Response) => {
     res.status(500).json({ error: 'Erro ao buscar pacientes por ID do Aluno.' });
   }
 };
+
+export async function getPacientesSelect(req:Request, res:Response) {
+  try {
+    if (!Paciente) {
+      throw new Error('Não tem paciente');
+    }
+
+    const pacienteData = await Paciente.find({}, 'nome');
+
+    if (!pacienteData) {
+      throw new Error('Pacientes não encontrados');
+    }
+
+    res.json(pacienteData);
+  } catch (error: any) {
+    res.json({ message: error.message });
+  }
+}
+
+
 
 // Metodo PATCH:
 export async function patchPaciente(request: Request, response: Response) {
@@ -1198,7 +1218,8 @@ export async function deleteSecretario(request: Request, response: Response) {
 // Metodo POST:
 export async function createConsulta(request: Request, response: Response) {
   const {
-    paciente,
+    pacienteNome,
+    pacienteID,
     title,
     start,
     end,
@@ -1209,10 +1230,15 @@ export async function createConsulta(request: Request, response: Response) {
     statusDaConsulta,
   } = request.body;
 
-  if (!paciente) {
+  if (!pacienteNome) {
     return response
         .status(203)
-        .send("Insira o paciente.");
+        .send("Insira o nome do paciente.");
+  }
+  if (!pacienteID){
+    return response
+      .status(203)
+      .send("Insira o ID do paciente")
   }
   if (!title) {
     return response
@@ -1265,7 +1291,8 @@ export async function createConsulta(request: Request, response: Response) {
 
   // Criação de um novo Consulta:
   const createConsulta = new consulta({
-    paciente, 
+    pacienteNome,
+    pacienteID, 
     title,
     start,
     end,
@@ -1340,19 +1367,21 @@ export async function patchConsulta(request: Request, response: Response) {
 
 }
 
-export const apagarTodasConsultas = async (req: Request, res: Response) => {
+export async function deleteConsulta(request: Request, response: Response) {
   try {
-    // Utilize o método `deleteMany` do modelo para apagar todas as consultas
-    const result = await consulta.deleteMany();
+    const _id = request.params.id;
 
-    // Verifique o resultado da operação
-    if (result.deletedCount > 0) {
-      return res.status(200).json({ message: 'Todas as consultas foram apagadas com sucesso.' });
-    } else {
-      return res.status(404).json({ message: 'Nenhuma consulta encontrada para apagar.' });
+    const consultaEncontrada = await consulta.findById(_id);
+
+    if (!consultaEncontrada) {
+      return response.status(404).json({ error: 'Consulta não encontrada' });
     }
+
+    const consultaExcluida = await consulta.findByIdAndDelete(_id);
+
+    return response.json({ message: 'Consulta excluída com sucesso', consulta: consultaExcluida});
   } catch (error) {
-    console.error('Erro ao apagar consultas:', error);
-    return res.status(500).json({ message: 'Erro interno do servidor ao apagar consultas.' });
+    console.error(error);
+    return response.status(500).json({ error: 'Erro interno do servidor' });
   }
-};
+}

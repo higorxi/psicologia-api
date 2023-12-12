@@ -40,7 +40,8 @@ import {
     createConsulta,
     getConsultas,
     patchConsulta,
-    apagarTodasConsultas,
+    deleteConsulta,
+    getPacientesSelect,
     
 
 } from "../controllers/auth"    ;
@@ -66,6 +67,7 @@ router.post("/registroPaciente", createPaciente);
 router.get("/getPacientes", getPaciente);
 router.get("/getPacienteById/:id", getPacienteById);
 router.get("/getPacientesByIdAluno/:id", getPacientesByIdAluno)
+router.get("/getPacientesSelect", getPacientesSelect)
 router.patch("/attPaciente/:id", patchPaciente);
 router.patch("/arquivarPacientes", patchPacienteArquivo);
 router.delete("/deletePaciente/:id", deletePaciente);
@@ -92,6 +94,6 @@ router.delete("/deleteSecretario/:id", deleteSecretario);
 router.post("/registrarConsulta", createConsulta);
 router.get("/getConsulta", getConsultas);
 router.patch("/attConsulta/:id", patchConsulta);
-router.delete("/deletarConsultas", apagarTodasConsultas)
+router.delete("/deleteConsulta/:id", deleteConsulta )
 // obs. da errqo se tentar utilizar export default
 module.exports = router
