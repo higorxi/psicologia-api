@@ -37,6 +37,7 @@ const alunoSchema = new mongoose.Schema (
           },
           professorDisciplina: {
             type: String,
+            ref:"Professor",
             required: true,
           },
           email: {

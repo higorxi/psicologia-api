@@ -978,27 +978,37 @@ export async function getProfessoresSelect(req: Request, res: Response) {
 export async function patchProfessor(request: Request, response: Response) {
   try {
     const id = request.params.id;
-    const {
-    nome,
-    cpf,
-    telefoneContato,
-    email,
-    disciplina,
-    } = request.body;
+    const { nome, cpf, telefoneContato, email, disciplina } = request.body;
 
-    const res = await professor.findByIdAndUpdate(id, {
-    nome,
-    cpf,
-    telefoneContato,
-    email,
-    disciplina,
-    });
-    response.send({ status: "ok", ocorrencias: res})
-  }
-  catch (error) {
+    const professor = await Professor.findById(id);
+
+    if (!professor) {
+      return response.status(404).json({ status: 'error', message: 'Professor não encontrado.' });
+    }
+
+    professor.nome = nome;
+    professor.cpf = cpf;
+    professor.telefoneContato = telefoneContato;
+    professor.email = email;
+    professor.disciplina = disciplina;
+
+    await professor.save();
+
+    const alunosAssociados = await Aluno.find({ professorID: id });
+
+    await Promise.all(
+      alunosAssociados.map(async (aluno) => {
+        aluno.professorNome = nome;
+        aluno.professorDisciplina = disciplina;
+        await aluno.save();
+      })
+    );
+
+    return response.json({ status: 'ok', message: 'Professor e alunos associados atualizados com sucesso.' });
+  } catch (error) {
     console.error(error);
+    return response.status(500).json({ status: 'error', message: 'Erro ao atualizar professor e alunos.' });
   }
-
 }
 
 export async function patchProfessorArquivo(request: Request, response: Response) {
@@ -1218,16 +1228,18 @@ export async function deleteSecretario(request: Request, response: Response) {
 // Metodo POST:
 export async function createConsulta(request: Request, response: Response) {
   const {
-    pacienteNome,
     pacienteID,
+    pacienteNome,
     title,
     start,
     end,
     resourceId,
-    frequencia,
+    recorrencia,
     tipoDeConsulta,
+    consultaRecorrenteID,
     observacao,
     statusDaConsulta,
+    alunoID,
   } = request.body;
 
   if (!pacienteNome) {
@@ -1264,7 +1276,7 @@ export async function createConsulta(request: Request, response: Response) {
         .send("Insira o local da consulta.");
   }
 
-  if (!frequencia) {
+  if (!recorrencia) {
     return response
         .status(203)
         .send("Insira qual a frequencia da consulta.");
@@ -1291,16 +1303,18 @@ export async function createConsulta(request: Request, response: Response) {
 
   // Criação de um novo Consulta:
   const createConsulta = new consulta({
-    pacienteNome,
-    pacienteID, 
-    title,
-    start,
-    end,
-    resourceId,
-    frequencia,
-    tipoDeConsulta,
-    observacao,
-    statusDaConsulta,
+    pacienteID,
+      pacienteNome,
+      title,
+      start,
+      end,
+      resourceId,
+      recorrencia,
+      tipoDeConsulta,
+      consultaRecorrenteID,
+      observacao,
+      statusDaConsulta,
+      alunoID,
   });
 
   // Salvamento do novo usuário no banco de dados:
@@ -1344,6 +1358,7 @@ export async function patchConsulta(request: Request, response: Response) {
     dataDaConsulta,
     frequencia,
     tipoDeConsulta,
+    consultaRecorrenteID,
     observacao,
     statusDaConsulta,
     } = request.body;
@@ -1356,6 +1371,7 @@ export async function patchConsulta(request: Request, response: Response) {
     dataDaConsulta,
     frequencia,
     tipoDeConsulta,
+    consultaRecorrenteID,
     observacao,
     statusDaConsulta,
     });

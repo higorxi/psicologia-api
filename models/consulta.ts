@@ -9,26 +9,37 @@ const consultaSchema = new mongoose.Schema(
     },
     pacienteNome:{
       type: String,
-      require: true,
+      required: true,
     },
     title: {
       type: String,
       required: true,
     },
     start: {
-      type: String,
+      type: Date,
       required: true,
     },
     end: {
-      type: String,
+      type: Date,
       required: true,
     },
     resourceId: {
       type: String,
       required: true,
     },
-    frequencia: {
-      type: String,
+    recorrencia: {
+      frequency: {
+        type: String,
+        required: false, 
+      },
+      interval: {
+        type: Number,
+        required: false, 
+      },
+    },
+    consultaRecorrenteID: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Consulta',
       required: true,
     },
     tipoDeConsulta: {
@@ -50,7 +61,7 @@ const consultaSchema = new mongoose.Schema(
     alunoID:{
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Aluno',
-      require: true,
+      required: true,
     },
   },
   { timestamps: true }
